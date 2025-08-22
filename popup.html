@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>R6S Enhancer - Favorites</title>
+    <style>
+        body { font-family: sans-serif; width: 520px; background-color: #1a1a1a; color: #e0e0e0; margin: 0; }
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background-color: #2c2c2c; }
+        .tabs { display: flex; gap: 10px; }
+        .tab-button { background: none; border: none; color: #888; font-size: 16px; cursor: pointer; padding: 5px; font-weight: bold; }
+        .tab-button.active { color: #fff; }
+        button#refreshButton { background-color: #007bff; color: white; border: none; padding: 6px 12px; font-size: 12px; border-radius: 5px; cursor: pointer; }
+        button:disabled { background-color: #555; }
+        #status { padding: 8px 15px; font-size: 12px; text-align: center; border-bottom: 1px solid #444; min-height: 16px; transition: background-color 0.5s; }
+        .container { max-height: 400px; overflow-y: auto; }
+        .data-table { width: 100%; border-collapse: collapse; table-layout: fixed;}
+        .data-table th, .data-table td { padding: 4px 8px; border-bottom: 1px solid #333; font-size: 13px; white-space: nowrap; vertical-align: middle; text-align: center; }
+        .data-table th { background-color: #383838; padding: 8px 6px; font-size: 12px; text-align: center; white-space: nowrap; }
+        .data-table .col-name-th, .data-table .col-name-td { text-align: left; }
+        .data-table tr.main-row.hover-effect, .data-table tr.sub-row.hover-effect { background-color: #333; cursor: pointer; }
+        .data-table tr.data-row:hover { background-color: #333; cursor: pointer; }
+        th[data-sort-key] { cursor: pointer; user-select: none; }
+        th[data-sort-key]:hover { background-color: #4a4a4a; }
+        th.sorted { background-color: #007bff; }
+        .item-image { width: 40px; height: 40px; object-fit: contain; border-radius: 4px; background-color: #222; }
+        .item-name-container { display: flex; align-items: center; gap: 5px; }
+        .item-name { max-width: 150px; overflow: hidden; text-overflow: ellipsis; font-weight: bold; }
+        .positive { color: #4caf50; } .negative { color: #f44336; }
+        .delete-btn { color: #999; cursor: pointer; font-size: 20px; line-height: 1; }
+        .delete-btn:hover { color: #f44336; }
+        .alert-btn { color: #999; cursor: pointer; font-size: 18px; line-height: 1; }
+        .alert-btn.active { color: #ffeb3b; }
+        .alert-btn:hover { color: #ffeb3b; }
+        .action-cell { display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .sub-row td { padding-top: 0; padding-bottom: 8px; border-bottom: 1px solid #333; }
+        .sub-info { font-size: 11px !important; color: #aaa; }
+        .sub-info span:not(:last-child):after { content: ' | '; margin: 0 4px; color: #666; }
+        .no-bottom-border { border-bottom: none !important; }
+        .footer { padding: 10px; text-align: center; background-color: #2c2c2c; border-top: 1px solid #444; }
+        .footer a { color: #0099ff; text-decoration: none; font-size: 13px; }
+        .footer a:hover { text-decoration: underline; }
+        .col-img { width: 10%; }
+        .col-name { width: 35%; }
+        .col-data1, .col-data2, .col-data3 { width: 15%; }
+        .col-action { width: 10%; }
+
+        .enhancer-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 10000; display: flex; justify-content: center; align-items: center; }
+        .enhancer-modal-content { background-color: #2c2c2c; padding: 20px; border-radius: 8px; border: 1px solid #555; width: 320px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .enhancer-modal-content h3 { margin-top: 0; text-align: center; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .enhancer-modal-row { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .enhancer-modal-row label { flex-basis: 80px; }
+        .enhancer-modal-row select, .enhancer-modal-row input { flex-grow: 1; padding: 5px; background-color: #1a1a1a; color: #e0e0e0; border: 1px solid #444; border-radius: 4px; }
+        .enhancer-modal-buttons { display: flex; justify-content: space-between; margin-top: 20px; }
+        .enhancer-modal-buttons button { padding: 8px 16px; border-radius: 5px; border: none; cursor: pointer; font-weight: bold; }
+        #enhancer-alert-save { background-color: #007bff; color: white; }
+        #enhancer-alert-delete { background-color: #dc3545; color: white; }
+        #enhancer-alert-cancel { background-color: #6c757d; color: white; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="tabs">
+            <button id="favoritesTab" class="tab-button">즐겨찾기</button>
+            <button id="ownedTab" class="tab-button">보유 아이템</button>
+        </div>
+        <button id="refreshButton">새로고침</button>
+    </div>
+    <div id="status">데이터를 불러오는 중...</div>
+    <div class="container">
+        <table class="data-table">
+            <thead id="tableHeader"></thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+    <div class="footer">
+        <a href="dashboard.html" target="_blank">📊 상세 대시보드 보기</a>
+    </div>
+    <script src="popup.js"></script>
+</body>
+</html>

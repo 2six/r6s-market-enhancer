@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>R6S Market Enhancer - Dashboard</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #1a1a1a; color: #e0e0e0; margin: 0; padding: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #444; }
+        h1 { margin: 0; font-size: 24px;}
+        .header-controls { display: flex; align-items: center; gap: 15px; }
+        button { background-color: #007bff; color: white; border: none; padding: 8px 16px; font-size: 14px; border-radius: 5px; cursor: pointer; }
+        button:disabled { background-color: #555; cursor: not-allowed; }
+        #status { font-size: 13px; color: #aaa; }
+        .tabs { border-bottom: 1px solid #444; margin-bottom: 20px; text-align: center; }
+        .tab-button { background-color: transparent; border: none; color: #aaa; padding: 10px 20px; font-size: 16px; cursor: pointer; border-bottom: 3px solid transparent; }
+        .tab-button.active { color: #fff; border-bottom: 3px solid #007bff; }
+        .filter-controls { display: flex; gap: 15px; align-items: center; padding: 15px; background-color: #2c2c2c; border-radius: 8px; margin-bottom: 20px; }
+        .filter-controls input[type="search"], .filter-controls select { padding: 8px; background-color: #1a1a1a; color: #e0e0e0; border: 1px solid #444; border-radius: 4px; font-size: 14px; }
+        .filter-controls input[type="search"] { flex-grow: 1; }
+        #info-text { text-align: center; color: #888; margin-bottom: 20px; min-height: 1.2em; }
+        table { width: 100%; border-collapse: collapse; background-color: #2c2c2c; }
+        th, td { border: 1px solid #444; padding: 12px 10px; text-align: center; vertical-align: middle; font-size: 14px; }
+        th { background-color: #383838; color: #fff; cursor: pointer; user-select: none; position: sticky; top: 0; z-index: 1; }
+        th.sorted { background-color: #007bff; }
+        thead tr:first-child th { background-color: #2a2a2a; }
+        th[data-sort-key]:hover { background-color: #4a4a4a; }
+        tr:nth-child(even) { background-color: #333; }
+        tr:hover { background-color: #484848; }
+        .td-img { width: 80px; }
+        .td-name-container { text-align: left; }
+        .item-name-text { font-weight: bold; }
+        td img { width: 64px; height: 64px; object-fit: contain; vertical-align: middle; border-radius: 4px; }
+        .positive { color: #4caf50; font-weight: bold; }
+        .negative { color: #f44336; font-weight: bold; }
+        .neutral { color: #e0e0e0; }
+        .sellable { color: #4caf50; font-size: 1.2em; cursor: help; }
+        .locked { color: #ff9800; font-size: 1.2em; cursor: help; }
+        .sub-info { font-size: 12px; color: #aaa; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .sub-info span:not(:last-child):after { content: ' | '; margin: 0 5px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 대시보드</h1>
+        <div class="header-controls">
+            <span id="status">데이터를 불러오는 중...</span>
+            <button id="refreshButton">새로고침</button>
+        </div>
+    </div>
+    <div class="tabs">
+        <button id="ownedTab" class="tab-button active">보유 아이템</button>
+        <button id="favoritesTab" class="tab-button">즐겨찾기</button>
+    </div>
+    <div class="filter-controls">
+        <input type="search" id="searchInput" placeholder="이름, 주/부 태그로 검색...">
+        <select id="typeFilter">
+            <option value="">모든 타입</option>
+            <option>무기 스킨</option>
+            <option>머리보호구</option>
+            <option>전투복</option>
+            <option>부속품 스킨</option>
+            <option>부적</option>
+            <option>대원 초상화</option>
+            <option>카드 뒷면</option>
+            <option>드론 스킨</option>
+            <option>도구 스킨</option>
+        </select>
+        <select id="sellableFilter">
+            <option value="">모든 판매 상태</option>
+            <option value="true">판매 가능</option>
+            <option value="false">판매 불가</option>
+        </select>
+    </div>
+    <p id="info-text"></p>
+    <div id="reportContainer"></div>
+    <script src="dashboard.js"></script>
+</body>
+</html>
